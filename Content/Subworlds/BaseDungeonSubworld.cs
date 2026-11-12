@@ -31,7 +31,7 @@ namespace WarpedAtlas.Content.Subworlds
         public static int GracePeriodTimer = 0;
         public static Terraria.Utilities.UnifiedRandom MapRNG;
 
-        // NEW: Store the penultimate room coordinates for boss respawns
+        //Store the penultimate room coordinates for boss respawns
         public static int PenultimateRoomX = 0;
         public static int PenultimateRoomY = 0;
 
@@ -137,7 +137,7 @@ namespace WarpedAtlas.Content.Subworlds
 
                 RoomNode bossNode = graph.BossNode;
 
-                // NEW: Capture the penultimate room's coordinates for respawning
+                //Capture the penultimate room's coordinates for respawning
                 if (bossNode.ConnectedNodes.Count > 0) {
                     RoomNode penultimate = bossNode.ConnectedNodes[0];
                     PenultimateRoomX = penultimate.CenterTile.X;

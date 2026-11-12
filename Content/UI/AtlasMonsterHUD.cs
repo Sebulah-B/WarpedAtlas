@@ -48,14 +48,14 @@ namespace WarpedAtlas.Content.UI
                 counterText.SetText("  Clearance Secured! Altar Stabilized.");
                 counterText.TextColor = Color.Cyan;
 
-                // DYNAMIC SEAL REMOVAL MECHANIC
+                
                 if (!BaseDungeonSubworld.GateHasOpened && BaseDungeonSubworld.GateWallX > 0) {
                     BaseDungeonSubworld.GateHasOpened = true;
 
                     int aX = BaseDungeonSubworld.GateWallX;
                     int aY = BaseDungeonSubworld.GateFloorY;
 
-                    // Expanded deletion radius to cleanly shatter the entire box structure[cite: 1]
+                    
                     for (int gx = aX - 6; gx <= aX + 6; gx++) {
                         for (int gy = aY - 7; gy <= aY + 3; gy++) {
                             Tile tile = Main.tile[gx, gy];

@@ -10,7 +10,7 @@ namespace WarpedAtlas.Content.Tiles
 {
 	public class ExtractionPortalTile : ModTile
 	{
-		// FIX: Points directly to a validated vanilla multi-tile sheet path to prevent startup exceptions
+		
 		public override string Texture => "Terraria/Images/Tiles_" + TileID.ElderCrystalStand;
 
 		public override void SetStaticDefaults() {

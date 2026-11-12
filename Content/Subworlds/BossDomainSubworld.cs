@@ -35,7 +35,7 @@ namespace WarpedAtlas.Content.Subworlds
                 // 1. Clear everything and place background walls
                 for (int x = 0; x < Width; x++) {
                     for (int y = 0; y < Height; y++) {
-                        Tile tile = Main.tile[x, y]; // Extracted for CS1612
+                        Tile tile = Main.tile[x, y]; 
                         tile.HasTile = false;
                         if (x >= centerX - arenaRadius && x <= centerX + arenaRadius && y >= centerY - arenaHeight && y <= centerY + arenaHeight) {
                             tile.WallType = wallTile;
@@ -46,12 +46,12 @@ namespace WarpedAtlas.Content.Subworlds
                 // 2. Build the solid arena floor and ceiling
                 for (int x = centerX - arenaRadius; x <= centerX + arenaRadius; x++) {
                     for (int y = centerY + arenaHeight; y <= centerY + arenaHeight + 3; y++) {
-                        Tile floorTileRef = Main.tile[x, y]; // Extracted for CS1612
+                        Tile floorTileRef = Main.tile[x, y]; 
                         floorTileRef.HasTile = true;
                         floorTileRef.TileType = floorTile;
                     }
                     for (int y = centerY - arenaHeight - 3; y <= centerY - arenaHeight; y++) {
-                        Tile ceilTileRef = Main.tile[x, y]; // Extracted for CS1612
+                        Tile ceilTileRef = Main.tile[x, y]; 
                         ceilTileRef.HasTile = true;
                         ceilTileRef.TileType = floorTile;
                     }
@@ -60,11 +60,11 @@ namespace WarpedAtlas.Content.Subworlds
                 // 3. Build side walls
                 for (int y = centerY - arenaHeight; y <= centerY + arenaHeight; y++) {
                     for (int thickness = 0; thickness < 4; thickness++) {
-                        Tile leftWallTile = Main.tile[centerX - arenaRadius - thickness, y]; // Extracted for CS1612
+                        Tile leftWallTile = Main.tile[centerX - arenaRadius - thickness, y]; 
                         leftWallTile.HasTile = true;
                         leftWallTile.TileType = floorTile;
                         
-                        Tile rightWallTile = Main.tile[centerX + arenaRadius + thickness, y]; // Extracted for CS1612
+                        Tile rightWallTile = Main.tile[centerX + arenaRadius + thickness, y]; 
                         rightWallTile.HasTile = true;
                         rightWallTile.TileType = floorTile;
                     }
@@ -74,7 +74,7 @@ namespace WarpedAtlas.Content.Subworlds
                 for (int p = 1; p <= 3; p++) {
                     int platformY = (centerY + arenaHeight) - (p * 15);
                     for (int x = centerX - arenaRadius + 5; x <= centerX + arenaRadius - 5; x++) {
-                        Tile platformTile = Main.tile[x, platformY]; // Extracted for CS1612
+                        Tile platformTile = Main.tile[x, platformY]; 
                         platformTile.HasTile = true;
                         platformTile.TileType = TileID.Platforms;
                         platformTile.TileFrameY = (short)(BaseDungeonSubworld.ActiveProfile.PlatformStyle * 18);

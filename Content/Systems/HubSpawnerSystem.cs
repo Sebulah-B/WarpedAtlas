@@ -19,7 +19,7 @@ namespace WarpedAtlas.Content.Systems
                 int centerX = Main.maxTilesX / 2;
                 int centerY = Main.maxTilesY / 2;
 
-                // 1. Safe Clear (Fixes CS1612)
+                // 1. Safe Clear 
                 for (int x = 0; x < Main.maxTilesX; x++) {
                     for (int y = 0; y < Main.maxTilesY; y++) {
                         Tile tile = Main.tile[x, y];
@@ -94,7 +94,6 @@ namespace WarpedAtlas.Content.Systems
                             if (i >= 0 && i < Main.maxTilesX && j >= 0 && j < Main.maxTilesY) {
                                 Tile t = Main.tile[i, j];
                                 if (t.HasTile && t.TileType == TileID.TargetDummy && t.TileFrameX == 0 && t.TileFrameY == 0) {
-                                    // CORRECTED NAMESPACE HERE
                                     Terraria.GameContent.Tile_Entities.TETrainingDummy.Place(i, j);
                                 }
                             }
@@ -102,7 +101,7 @@ namespace WarpedAtlas.Content.Systems
                     }
                 }
 
-                // 7. Safe Texture Framing (Fixes the red Error Log)
+                // 7. Safe Texture Framing 
                 for (int x = centerX - baseRadius - 5; x <= centerX + baseRadius + 5; x++) {
                     for (int y = plazaY - 5; y < bottomY + 15; y++) {
                         if (x >= 0 && x < Main.maxTilesX && y >= 0 && y < Main.maxTilesY) {

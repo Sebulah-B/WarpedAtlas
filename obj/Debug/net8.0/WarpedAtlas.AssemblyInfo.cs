@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("WarpedAtlas")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b2979eaca445f68b073fec425163491c1a09df73")]
 [assembly: System.Reflection.AssemblyProductAttribute("WarpedAtlas")]
 [assembly: System.Reflection.AssemblyTitleAttribute("WarpedAtlas")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
