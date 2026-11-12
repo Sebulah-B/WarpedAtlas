@@ -1,0 +1,109 @@
+# THE WARPED ATLAS: TECHNICAL DOCUMENTATION & ARCHITECTURE
+*Living Document — Tracks implemented systems, active mechanics, and resolved engineering issues.*
+
+---
+
+## 1. The Sky-Island Hubworld (Overworld)
+* **World Generation (`HubSpawnerSystem.cs`):** Clears vanilla background loops and world generation passes, forcing an empty air canvas with a `TileID.Sunplate` and `TileID.Cloud` platform centered at (`Main.maxTilesX / 2`).
+* **Persistence & Safe Zone:** Serves as the primary Overworld to inherit native player inventory and chest saving. Automatically suppresses vanilla monster spawning (`EditSpawnRate`) and Tombstone projectiles (`AtlasTombstoneControl.cs`) when `SubworldSystem.Current == null`.
+* **Onboarding UI (`AtlasIntroUI.cs`):** Replaces traditional spawning by presenting players with a custom class-selection interface. Players choose Warrior, Ranger, Sorcerer, or Summoner to receive their origin node, a baseline weapon, and their first `WaystoneBase` token.
+
+---
+
+## 2. Procedural Dungeon Engine & Traversability
+* **Subworld Generation (`BaseDungeonSubworld.cs`):** Generates 9–12 rectangular combat chambers connected by cardinal corridors using tile and wall palettes defined in active `MapProfile` scripts. 
+* **Guaranteed Vaults & Interior Prefabs (`MapTraversability.cs`, `MapPrefab.cs`):** Pre-selects one non-entrance, non-boss node to house a guaranteed Vault chest. Stamps platform layouts (`BalconyChamber`, `PillaredVault`) into standard and puzzle rooms.
+* **Traversability Pass:** Executes post-processing via `FinalizeTraversability`, cascading vertical ropes and dropping ropes from elevated doorway ledges to floor levels to eliminate drop-off traps.
+* **Biome Palette Expansion (`MapProfile.cs`):** Implemented 8 distinct biome profiles ranging from Tier 1 to Tier 8:
+  1. **Tier 1:** Ancient Skeleton Dungeon (`DungeonProfile`)
+  2. **Tier 2:** Lihzahrd Temple Vault (`LihzahrdProfile`)
+  3. **Tier 3:** Lost Sandstone Pyramid (`SandstoneProfile`)
+  4. **Tier 4:** Prismatic Hallowed Crypt (`HallowedProfile`)
+  5. **Tier 5:** Cryo-Frost Spire (`CryoFrostProfile`)
+  6. **Tier 6:** Hellforge Crucible (`HellforgeProfile`)
+  7. **Tier 7:** Granite Automaton (`GraniteProfile`)
+  8. **Tier 8:** Fungal Void (`FungalProfile`)
+
+---
+
+## 3. Combat Pacing, Aggro, Scaling & HUD
+* **Sector Aggro Control (`DungeonAggroControl.cs`):** Clears monster targets (`npc.target = -1`) and freezes AI tick execution if an enemy is further than 45 blocks horizontally from the player.
+* **Entry Shroud & Lighting:** Grants a 10-second (600 tick) safe window upon entering subworlds that breaks upon moving >1 tile or using items. `MapLightingSystem.cs` and `MapIlluminationBuff.cs` handle ambient viewport lighting.
+* **Standardized Scaling & Juicing (`AtlasNPCScaleSystem.cs`):** Blends vanilla health with a tier-based floor (`100 + (tier - 1) * 50`) and applies linear damage/defense scaling. Dynamically reads `BaseDungeonSubworld.CurrentPressureLevel` to apply a compounding +15% health/damage and +2 defense multiplier per Pressure stack.
+* **Threat Tracking (`AtlasMonsterHUD.cs`):** Tracks dungeon population dynamically. Purging 75% of room monsters destroys the `ActiveStoneBlock` seal, freeing the central `MapAltarTile`.
+
+---
+
+## 4. ARPG Affix Engine, Currency & Loot Matrix
+* **Strict Economy Filter (`AtlasLootFilter.cs`):** Vaporizes non-essential vanilla monster drops (Gel, Lenses, Banners, etc.) inside subworlds, permitting only Hearts, Mana Stars, Coins, Healing/Mana Potions, and Warped Atlas items.
+* **Class-Targeted Loot Engine (`AtlasGlobalItem.cs`):** Equipment drops in Normal, Magic, Rare, or Unique tiers. Filters affixes dynamically based on the player's `ChosenClass` (Melee, Ranged, Magic, Summon, or Generic).
+* **Cursor-Grab Crafting (`Content/Items/Currencies/`):** Right-clicking currency orbs onto held equipment modifies item affixes dynamically:
+  * *Orb of Alteration:* Rerolls a Magic item (1 affix).
+  * *Orb of Alchemy:* Upgrades Normal to Rare (1–3 Prefixes, 1–3 Suffixes).
+  * *Regal Orb:* Upgrades Magic to Rare, adding 1 new affix.
+  * *Chaos Orb:* Rerolls all affixes on a Rare item.
+  * *Exalted Orb:* Adds 1 random affix to a Rare item with open slots.
+  * *Divine Orb:* Randomizes numerical values of existing affixes.
+  * *Orb of Annulment:* Removes 1 random affix (downgrades to Normal if empty).
+  * *Orb of Scouring:* Strips all affixes, resetting the item to Normal tier.
+* **Primary Vault Chests:** Rolls class-appropriate vanilla weapons, armor, and accessories per Map Profile, preventing duplicate rolls within the same run via `DroppedLootTracker`.
+* **Map Altar & Extraction:** At 75% clear rate, interacting with `MapAltarTile` spawns a tier-matched `MapGuardianNPC`. Defeating the Guardian drops currencies, an `ApexCatalystKey`, and opens an `ExtractionPortalTile`.
+
+---
+
+## 5. Deterministic Cartesian Grid Passive Tree
+* **Global Registry Manager (`PassiveTreeRegistry.cs`):** Delegates node indexing to class-isolated loaders (`WarriorPassiveTree` [1000+], `RangerPassiveTree` [2000+], `SorcererPassiveTree` [3000+], `SummonerPassiveTree` [4000+]).
+* **Geometrical Cluster Engine (800 Nodes Total):** Uses a 2D Cartesian Rotation Matrix (`CardinalTemplate` and `DiagonalTemplate`) to spin 22-node branches into 8 compass directions with inner and outer forks without line intersections.
+* **Progression Player Engine (`AtlasProgressionPlayer.cs`):** Tracks character leveling (`AddExp`), passive point distribution (+2 per level), weapon sub-archetype bonuses (Yoyo, Bow, Gun, Tome, Whip), and custom ARPG defensive resources:
+  * *Energy Shield (ES):* Absorbs damage before Life; recharges after a 180-tick delay.
+  * *Spirit Ward:* Summoner defensive buffer; leeched via minion/sentry strikes (10% base, 25% with *Symbiotic Link*).
+  * *Flat Evasion:* Hard-capped at 75% dodge chance via `FreeDodge`.
+  * *Armor Penetration & Endurance:* Flat defense piercing and percentage damage reduction.
+* **Zoom & Cursor-Anchored Canvas (`AtlasPassiveUI.cs`):** Custom `SpriteBatch` UI maintaining 60 FPS with mouse-wheel scaling, panning, and texture preloading.
+
+---
+
+## 6. Dynamic In-Dungeon Encounters & Active Toolkit Weapons
+* **The Escalation Anchor (`EscalationAnchorNPC.cs`, `AtlasEscalationUI.cs`):**
+  * *Injection:* 33% chance to spawn in Standard rooms during `MapGridGraph` generation.
+  * *Presentation:* 3x scaled hovering monolith with custom cursor icon hover and a dedicated `UIState` panel (bypassing vanilla NPC chat bubbles).
+  * *Mechanic:* Engaging triggers endless monster waves clamped to room bounds (+/- 250px). Increments `CurrentPressureLevel` every 10 seconds (600 ticks).
+  * *Extraction Cache:* Extracting spawns a secondary Gold Chest (with bruteforce tile placement fallback) containing independent loot: 1 Active Toolkit Weapon, 1 Tier-Scaled Utility item (Hooks/Wings), and Pressure-scaled Alchemy/Chaos Orbs.
+* **Active Toolkit Weapons (`Content/Items/Weapons/`):**
+  * *Warrior — Seismic Cry (`SeismicCry.cs`, `SeismicShockwaveProjectile.cs`):* Unleashes a 350px expanding earthquake ring. Grants `SeismicMightBuff` for 10s (+5 Defense, +2% DR, +8% Melee Damage per enemy hit, up to 10 stacks) with an 8s `WarcryCooldownDebuff`.
+  * *Ranger — Shrapnel Trap (`ShrapnelTrap.cs`, `ShrapnelTrapProjectile.cs`):* Tosses an airborne mine that arms upon settling or colliding with tiles. Detonates when enemies enter its 120px proximity scanner, firing 8 radial High-Velocity Bullets.
+  * *Summoner — Martyr's Idol (`MartyrsIdol.cs`, `MartyrPayload.cs`):* Fetish weapon requiring an active minion to cast. Sacrifices the minion closest to the cursor, transforming it into a high-speed homing payload that phases through walls and detonates in a 180px gore explosion (clearing target iFrames for chain-detonations).
+
+---
+
+## 7. Apex Bosses & Unique Item Framework
+* **The Apex Domain (`BossDomainSubworld.cs`):** Dedicated 800x800 arena accessed from the Sky Hub using an `ApexCatalystKey`. Houses the `ApexAltarTile`.
+* **Apex Boss Roster (`ApexBossNPC.cs`):** 8 pinnacle bosses scaled by map tier with class-conditional drop rules (`ClassDropCondition`):
+  * *Tier 1 — Apex Sovereign:* Cursed flame hazards, sine-wave hovering, fireballs.
+  * *Tier 2 — Apex Colossus:* 1.5x scale, jump height suppression, leap-slam shockwaves.
+  * *Tier 3 — Apex Pharaoh:* Translucent orbiting movement, triple-angle Djinn curses.
+  * *Tier 4 — Apex Seraph:* RGB disco tint, 9-bolt geometric spreads.
+  * *Tier 5 — Apex Cryo Titan:* Chilled/Frostburn on hit, heavy snowball barrages.
+  * *Tier 6 — Apex Infernal:* Time-based enrage multiplier (speed/fire rate), Greek Fire floor hazards.
+  * *Tier 7 — Apex Granite Core:* Orbiting granite dust, lasers, and a 3-second velocity check that hurls stationary players into walls.
+  * *Tier 8 — Apex Fungal Lord:* Erratic movement, spore gas, and 3x resource drain targeting Spirit Ward and Energy Shield before Life.
+* **Unique Weapons (`Content/Items/Uniques/`):** 32 build-defining weapons (4 per tier, 8 per class) utilizing `AtlasUniqueItem`:
+  * *Warrior:* `TheLeviathan`, `Faultline`, `SunscorchedKhopesh`, `PrismaticEdge`, `Avalanche`, `CruciblesWrath`, `KineticCrusher`, `MycelialGlaive`.
+  * *Ranger:* `WindripperEcho`, `RubbleMaker`, `DuneShredder`, `HeavensMandate`, `Hailstorm`, `BrimstoneSalvo`, `RailgunCore`, `ToxicProliferator`.
+  * *Sorcerer:* `AstralBattery`, `GeomancersOmen`, `MirageWeaver`, `SeraphsGaze`, `AbsoluteZero`, `PyromancersBrand`, `GeodeChanneler`, `VoidBlight`.
+  * *Summoner:* `SovereignChain`, `MonolithCore`, `PharaohsCurse`, `SeraphimChime`, `CryoHeart`, `AshenLash`, `MatrixOverlord`, `FungalSymbiote` (with custom `FungalEaterMinion`).
+
+---
+
+## 8. Post-Mortem & Resolved Issues Log
+* **Radial Cluster Overlap:** Initial trigonometric rotation for the passive tree caused visual crowding and squashed diagonal lines.
+  * *Rectification:* Rebuilt using a Geometrical Cluster Engine with hand-crafted 22-node Cartesian templates and a 2D rotation matrix (`dir % 2`).
+* **UI Layer Inventory Clipping:** Custom passive canvas rendered behind open inventory panels and allowed accidental item usage while panning.
+  * *Rectification:* Shifted `ModifyInterfaceLayers` injection target to `Vanilla: Mouse Text` and locked background interactions via `mouseInterface = true`.
+* **Stat Lifecycle Desync:** Shifted dynamic boss health equations to `ApplyDifficultyAndPlayerScaling`, preventing Expert/Master health desyncs. Reduced Boss Damage scaling from 0.40f to 0.15f per tier to prevent instant one-shots.
+* **Ghost Affix Save Corruptions:** Deprecated affixes caused `NullReferenceException` crashes on load.
+  * *Rectification:* Injected null-filtering `.Where(a => a != null)` into Save/Load hooks of `AtlasGlobalItem.cs`.
+* **Resource Desync:** Energy Shield and Ward capped out at base values before Keystones could apply.
+  * *Rectification:* Restructured `PostUpdateEquips` so Max Value manipulation strictly precedes Resource Capping and Recharge logic.
+* **Escalation Cache Placement Failure:** Secondary reward chests failed to materialize when `PlaceChest` targeted solid floor coordinates.
+  * *Rectification:* Implemented a downward floor-scanning loop paired with a bruteforce `Chest.CreateChest` tile-framing fallback in `EscalationAnchorNPC.cs`.

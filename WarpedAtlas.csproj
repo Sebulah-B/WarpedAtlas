@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\tModLoader.targets" />
+  <PropertyGroup>
+    <AssemblyName>WarpedAtlas</AssemblyName>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="SubworldLibrary" Version="*" Condition="'$(TargetFramework)' == 'net8.0'" />
+  </ItemGroup>
+</Project>

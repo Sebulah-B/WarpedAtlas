@@ -1,0 +1,380 @@
+# WARPEDATLAS 1.0: ARCHITECTURE SPECIFICATION
+
+### 1. The Sky-Island Hubworld (Overworld)
+
+* **World Generation (`HubSpawnerSystem.cs`):** Clears vanilla background loops and world generation passes, forcing an empty air canvas with a `TileID.Sunplate` and `TileID.Cloud` platform centered at (`Main.maxTilesX / 2`).
+
+
+* **Persistence & Safe Zone:** Serves as the primary Overworld to inherit native player inventory and chest saving. Automatically suppresses vanilla monster spawning (`EditSpawnPool`) when `SubworldSystem.Current == null`.
+
+
+* **Onboarding UI (`AtlasIntroUI.cs`):** Replaces traditional spawning by presenting players with a custom class-selection interface. Players choose Warrior, Ranger, Sorcerer, or Summoner to receive their origin node, a baseline weapon, and their first Waystone token.
+
+### 2. Procedural Dungeon Engine & Traversability
+
+* **Subworld Generation (`BaseDungeonSubworld.cs`):** Generates 4-5 rectangular combat chambers connected by linear horizontal corridors using tile and wall palettes defined in active `MapProfile` scripts. Contains an advanced guaranteed Vault generation logic.
+
+
+* **Traversability Pass (`MapTraversability.cs`):** Executes post-processing via `FinalizeTraversability`, dropping vertical ropes from elevated doorways to floor levels to eliminate drop-off traps.
+
+
+* **Biome Palette Expansion:** Implemented 8 distinct biome profiles ranging from Tier 1 to Tier 8: Dungeon, Lihzahrd, Sandstone, Hallowed, Cryo-Frost, Hellforge, Granite, and Fungal.
+
+
+
+### 3. Combat Pacing, Aggro & HUD
+
+* **Sector Aggro Control (`DungeonAggroControl.cs`):** Clears monster targets (`npc.target = -1`) and freezes AI tick execution if an enemy is further than 45 blocks from the player.
+
+
+* **Entry Shroud & Lighting:** Grants a 10-second (600 tick) safe window upon entering subworlds that breaks upon taking damage, moving >1 tile, or using items. `MapLightingSystem.cs` handles ambient viewport lighting.
+
+
+* **Threat Tracking (`AtlasMonsterHUD.cs`):** Tracks dungeon population dynamically. Purging 75% of room monsters destroys the Active Stone Block seal, freeing the central Map Altar.
+
+### 4. ARPG Affix Engine, Currency & Extraction
+
+* **Class-Targeted Loot Engine (`AtlasGlobalItem.cs`):** completely overhauls item drops. Equipment drops in Normal, Magic, or Rare tiers. The engine filters Affixes dynamically based on the player's `ChosenClass`, ensuring Sorcerers receive Magic Damage and Energy Shield, while Rangers receive Armor Penetration and Evasion.
+
+
+* **Cursor-Grab Crafting:** Right-clicking currency orbs (*Alteration, Alchemy, Regal, Chaos, Exalted, Divine, Scouring, Annulment*) onto held weapons inside inventory slots modifies item affixes dynamically across tiers.
+
+
+* **Map Altar & Extraction:** At 75% clear rate, interacting with the altar spawns a `MapGuardianNPC` variant. Defeating the boss shatters the altar and opens an `ExtractionPortalTile` return rift.
+
+
+
+### 5. Deterministic Cartesian Grid Passive Tree System
+
+* **Global Registry Manager (`PassiveTreeRegistry.cs`):** Completely decoupled from a universal origin. The registry delegates node indexing to class-isolated file loaders, ensuring players only render and interact with their chosen archetype.
+
+
+* **Geometrical Cluster Engine (800 Nodes Total):** Abandons trigonometric line generation in favor of a 2D Cartesian Rotation Matrix. Uses symmetrical "Diamond" and "Stepped Square" array templates to spin 22-node branches into 8 perfect compass directions without overlapping.
+
+
+* **Progression Player Engine (`AtlasProgressionPlayer.cs`):** Tracks character leveling (`AddExp`), passive point distribution, and custom ARPG defensive resources (Energy Shield, Spirit Ward, Flat Evasion, Armor Penetration).
+
+
+* **Zoom & Cursor-Anchored Canvas (`AtlasPassiveUI.cs`):** Bypasses standard UI elements for a custom `SpriteBatch` canvas to maintain 60 FPS. Features cursor-anchored mouse-wheel scaling (0.3x-2.0x), middle-click/drag panning, and dynamic spritesheet slicing.
+
+
+
+### 6. Apex Bosses & Unique Item Framework (NEWLY INTEGRATED)
+
+* **The Apex Domain (`BossDomainSubworld.cs`):** A dedicated arena instance accessed by utilizing Apex Catalyst Keys dropped by Map Guardians. Features scaled Boss Life/Damage algorithms (`AtlasNPCScaleSystem.cs`).
+
+
+* **Tier-Specific AI Encounters:** Apex Bosses break away from standard tracking algorithms, featuring bespoke bullet-hell mechanics, area denial, momentum-checking repulsion fields, and specialized state machines.
+* **Unique Item Engine:** Build-defining weapons with fixed, legendary affixes that directly interface with custom ARPG mechanics (e.g., converting Movement Speed to Attack Speed, burning the player for massive Damage Reduction, or converting Evasion to pure Critical Strike).
+
+
+
+---
+
+### POST-MORTEM & RESOLVED ISSUES LOG
+
+* **Radial Cluster Overlap:** Initial trigonometric rotation for the 200-node expansion caused massive visual crowding, squashed diagonal lines, and wasted screen real estate.
+
+
+* *Rectification:* Rebuilt the architecture using a Geometrical Cluster Engine. Hand-crafted 22-node Cartesian templates and manipulated them via a 2D rotation matrix (`dir % 2`) to ensure perfect 80px increments without a single line intersection.
+
+
+
+
+* **UI Layer Inventory Clipping:** The custom passive canvas rendered behind open inventory panels and allowed accidental item usage while panning.
+
+
+* *Rectification:* Shifted the `ModifyInterfaceLayers` injection target upward from `Vanilla: Inventory` to `Vanilla: Mouse Text`. Added `Main.playerInventory = false` and `Main.LocalPlayer.mouseInterface = true` to cleanly lock out background interactions.
+
+
+
+
+* **Stat Lifecycle Desync:** Shifted dynamic boss health equations to `ApplyDifficultyAndPlayerScaling` (`AtlasNPCScaleSystem.cs`), preventing Expert/Master health desyncs. Reduced Boss Damage scaling from 0.40f to 0.15f per tier to prevent instant one-shots in Master Mode.
+
+
+* **Ghost Affix Save Corruptions:** Deprecated or shifted affixes caused `NullReferenceException` crashes on character load.
+
+
+* *Rectification:* Injected aggressive null-filtering `.Where(a => a != null)` into the Save/Load data hooks of `AtlasGlobalItem.cs`.
+
+
+* **Resource Desync:** Energy Shield and Ward capped out at base values before Keystones could apply.
+
+
+* *Rectification:* Restructured `PostUpdateEquips` strictly ensuring Max Value manipulation occurs before Resource Capping and Recharge logic.
+
+
+
+---
+
+### ROADMAP: UPCOMING PHASES
+
+**Ascendancies (Sub-Class Specializations)**
+
+* **Core Concept:** A secondary mastery framework that allows players to refine their primary class into a hyper-specialized sub-class archetype. Unlocked in the Sky-Island Hub upon defeating their first Map Guardian, players gain access to an independent 8-node Ascendancy wheel separate from the main passive tree.
+
+
+* **Design Objective:** To provide build-defining specialization. While the primary tree offers broad stat scaling and archetype flexibility, Ascendancies deliver targeted, playstyle-altering keystone passives that lock in a distinct identity and power fantasy for the character.
+
+
+
+**Dynamic In-Dungeon Mechanics (Encounters)**
+
+* **Core Concept:** Procedurally injected, opt-in combat events that spawn dynamically within dungeon chambers during room generation. Rather than relying on a static "walk-and-clear" room flow, map chambers feature a randomized chance to generate interactive encounter anchors directly on the terrain.
+
+
+* **Strategic Direction:** Interacting with an anchor initiates a localized challenge such as high-density combat spikes, environmental pressures, or timed objectives that forces players to evaluate their build's current limits. Succeeding against these heightened threats yields premium rewards.
+
+
+
+---
+
+# Implementation Execution Strategy: Bosses First, Then Uniques
+
+To inject the highly specialized, bespoke mechanics into the Apex encounters and finalize their corresponding items, we will execute the changes in two distinct, sequential phases. This guarantees that the encounter scaling matches the weapons being farmed.
+
+## Phase A: Apex Boss AI & Visual Overhaul
+
+We will move away from the generalized bullet-hell loop currently housed in `ApexBossNPC.AI()` and push the state machine logic down into the eight inherited boss classes.
+
+1. **Refactoring the Base Class (`ApexBossNPC.cs`):**
+* Change the base `AI()` method to `virtual`, retaining only the targeting logic, despawn logic, and aggro tracking.
+* Retain the `ApplyDifficultyAndPlayerScaling` algorithm to ensure mathematical consistency across all tiers.
+* Keep the unified UI binding for `AtlasBossBar`.
+
+
+2. **Tier 1-4 Mechanical Implementation:**
+* **ApexSovereignNPC (Tier 1):** Override `AI()` to implement the "Cursed Roots" stationary hazard spawners and slow, large fireball tracing. Modify `PreDraw` to apply `Color.DarkRed`.
+* **ApexColossusNPC (Tier 2):** Override `AI()` to implement the gravity-altering "Crushed" debuff application. Create a custom downward slam state that spawns horizontal shockwave projectiles upon Y-axis velocity reaching 0. Scale to `1.5f`.
+* **ApexPharaohNPC (Tier 3):** Override `AI()` to implement the Mirage split. Use a timer to spawn two invincible dummy NPCs orbiting the player that mimic the main boss's attacks, fading the main boss opacity in `PreDraw`.
+* **ApexSeraphNPC (Tier 4):** Override `AI()` to discard tracking projectiles entirely. Use trigonometry to calculate a fixed geometric grid over the `BossDomainSubworld` arena and fire lines of `PhantasmalBolt` in delayed sequence. Apply `Main.DiscoColor` in `PreDraw`.
+
+
+3. **Tier 5-8 Mechanical Implementation:**
+* **ApexCryoTitanNPC (Tier 5):** Override `AI()` to launch ice boulders at arena walls. Calculate distance to solid tiles, and upon collision, fragment the projectile into 8 radial shards. Implement the 5-stack "Frostbite" player freeze via a custom Buff.
+* **ApexInfernalNPC (Tier 6):** Override `AI()` to implement the Enrage Timer. Tie the boss's movement speed and projectile cooldown integer directly to `NPC.ai[0]`. Flood the bottom 5 tiles of the arena with `Lava` projectiles over time.
+* **ApexGraniteCoreNPC (Tier 7):** Override `AI()` to cast the "Repulsion Field." Read `Main.LocalPlayer.velocity.Length()`; if it falls below a threshold, apply massive velocity to the player towards the nearest solid wall.
+* **ApexFungalLordNPC (Tier 8):** Override `OnHitPlayer` to intercept standard damage. Subtract damage explicitly from `AtlasProgressionPlayer.CurrentEnergyShield` and `CurrentWard` first, at a 3x multiplier. Override `AI()` to spawn stationary expanding spore clouds. Set `Color.Black` in `PreDraw`.
+
+
+
+## Phase B: Unique Weapon Hook Integration & Polish
+
+With the bosses dropping the items, the Uniques themselves must be precisely wired to interface with the global stats defined in `AtlasProgressionPlayer.cs` and `AtlasGlobalItem.cs`.
+
+1. **Weapon State Hooks (`HoldItem` vs `UpdateEquip`):**
+* Weapons like `CruciblesWrath` (Tier 6 Warrior) and `AbsoluteZero` (Tier 5 Sorcerer) require aggressive aura effects. We will rely exclusively on the `HoldItem` hook to apply `player.AddBuff(BuffID.OnFire)` and lock `prog.EnergyShieldRechargeDelay = 180`, ensuring these penalties disappear the frame the weapon is unequipped.
+* Weapons like `HeavensMandate` (Tier 4 Ranger) will use `HoldItem` to read `prog.EvasionChance`, add it to `player.GetCritChance(DamageClass.Ranged)`, and then set `prog.EvasionChance = 0f` to finalize the stat conversion.
+
+
+2. **Minion & Sentry Capacity Overrides:**
+* For `CryoHeart` (Tier 5 Summoner), we will explicitly set `player.maxMinions = 0` and increase `player.maxTurrets` within `HoldItem`. Because Terraria recalculates minion capacities every frame, this safely kills active minions without permanent save corruption.
+
+
+3. **Visual Polish & Projectile Assignment:**
+* Ensure all `Item.shoot` fields point to safely resolvable vanilla projectiles (e.g., using `ProjectileID.StormTigerGem` instead of unmapped names).
+* Utilize `MeleeEffects` overrides for melee weapons (like `MycelialGlaive` or `PrismaticEdge`) to emit thematic `DustID` trails matching their parent boss's color palette.
+
+To make the Apex Bosses true ARPG pinnacle encounters, we need to transition away from the shared `ApexBossNPC.AI()` state machine and give each of the 8 subclasses an `override AI()` and `override PreDraw()` method. By utilizing vanilla sprites but manipulating their colors, scales, and drawing custom telegraphs, we can give each boss a distinct identity.
+
+Here is the design blueprint for completely overhauling the 8 Apex Bosses and aligning their Unique drop tables to specific, highly desirable build archetypes.
+
+### Tier 1: Apex Sovereign (The Grove's Vengeance)
+
+**Visual Identity:** The Mourning Wood sprite, tinted a deep autumnal red (`Color.DarkRed`), leaving a trail of falling leaf particles.
+**Unique Moveset:** Area Denial & Spacing.
+
+* **Mechanic:** Periodically plants "Cursed Roots" on the arena platforms. These are stationary, invincible hazards that flare with cursed fire every 3 seconds. The player is forced to constantly reposition.
+* **The Chase:** Fires slow, massive fireballs that detonate into lingering fire zones upon hitting walls.
+**Uniques Identity:** *The Resource Converters.*
+* **Warrior (The Leviathan):** Max HP to AoE Novas.
+* **Ranger (Windripper Echo):** Movement Speed to Ranged Damage.
+* **Sorcerer (Astral Battery):** Max Mana to Energy Shield.
+* **Summoner (Sovereign Chain):** Ward scaling to Minion Damage.
+**Why Farm?** The perfect introductory tier. These Uniques teach the player how to convert unused stats into power, defining early-game ARPG builds.
+
+### Tier 2: Apex Colossus (The Earth-Shaker)
+
+**Visual Identity:** The Golem Head, scaled up 1.5x (`NPC.scale = 1.5f`), with a heavy `DustID.Stone` aura.
+**Unique Moveset:** Gravity Manipulation & Shockwaves.
+
+* **Mechanic:** Inflicts a custom "Crushed" debuff that halves the player's jump height.
+* **The Chase:** Leaps aggressively above the player and slams down. Upon hitting the floor, it sends two fast-moving, ground-hugging shockwaves outward that players must carefully jump over with their limited verticality.
+**Uniques Identity:** *The Immovable Objects.*
+* **Warrior (Faultline):** Defense scales crit shockwaves.
+* **Ranger (Rubble Maker):** Massive stats while standing perfectly still.
+* **Sorcerer (Geomancers Omen):** Energy Shield grants Damage Reduction but severely slows movement.
+* **Summoner (Monolith Core):** Ward grants Summon Damage.
+**Why Farm?** These drops enable stationary, hyper-tank "Turret" builds. Players farm this to bypass the need for dodging entirely.
+
+### Tier 3: Apex Pharaoh (The Sandstorm Mirage)
+
+**Visual Identity:** The Desert Djinn, rendered highly translucent (`Color * 0.5f`), leaving afterimages.
+**Unique Moveset:** Misdirection & Clones.
+
+* **Mechanic:** Splits into 3 identical entities that orbit the player. All three fire tornadoes, but two are "Mirages." Hitting a Mirage causes it to instantly retaliate with a fast, unavoidable sand-blast.
+* **The Chase:** The player must wait for the "real" Pharaoh to glow briefly before attacking, testing trigger discipline.
+**Uniques Identity:** *The Glass Cannons.*
+* **Warrior (Sunscorched Khopesh):** Halves Defense for massive Melee Damage.
+* **Ranger (Dune Shredder):** Grants massive Evasion while actively firing.
+* **Sorcerer (Mirage Weaver):** Converts Max Mana into flat Evasion Chance.
+* **Summoner (Pharaohs Curse):** +2 Minions, but severe movement speed penalty.
+**Why Farm?** Defines high-risk, high-reward builds. Players farm this to push their DPS to the absolute limit while relying purely on Evasion.
+
+### Tier 4: Apex Seraph (The Prismatic Arbiter)
+
+**Visual Identity:** The Hallow Boss sprite, cycling rapidly through the RGB color spectrum via `Main.DiscoColor`.
+**Unique Moveset:** Geometric Bullet Hell.
+
+* **Mechanic:** Abandons aimed shots entirely. Instead, it locks onto the center of the arena and fires highly structured, geometric patterns of light that cross the screen in grids.
+* **The Chase:** The player must find the "safe pockets" in the grid rather than simply running away.
+**Uniques Identity:** *The Stat Flippers.*
+* **Warrior (Prismatic Edge):** Attack Speed converts into Life Regeneration.
+* **Ranger (Heavens Mandate):** Evasion Chance converts entirely into Ranged Crit (disabling dodge).
+* **Sorcerer (Seraphs Gaze):** Missing Energy Shield grants Magic Crit.
+* **Summoner (Seraphim Chime):** Max Ward grants Max Minions.
+**Why Farm?** Allows players to invert their passive trees. A Ranger can take Evasion keystones specifically to convert them into a 100% Crit build.
+
+### Tier 5: Apex Cryo Titan (The Absolute Zero)
+
+**Visual Identity:** The Ice Queen surrounded by a massive, rotating hexagonal ice shield drawn via `PreDraw`.
+**Unique Moveset:** Chilling Buildup & Shatter.
+
+* **Mechanic:** Every projectile that hits the player applies a "Frostbite" stack. At 5 stacks, the player is frozen in place for 1.5 seconds.
+* **The Chase:** The boss fires slow-moving ice boulders that shatter into 8 fast-moving fragments when they hit the arena walls, punishing players who hug the perimeter.
+**Uniques Identity:** *The Extremists.*
+* **Warrior (Avalanche):** Defense dictates raw Melee Damage.
+* **Ranger (Hailstorm):** Movement Speed converts to Attack Speed.
+* **Sorcerer (Absolute Zero):** Massive damage while Energy Shield is up, but disables ES recharge.
+* **Summoner (Cryo Heart):** 0 Max Minions, massive Sentry capacity and damage.
+**Why Farm?** For hyper-specialized sub-classes (e.g., pure Sentry Summoners or pure Defense Warriors).
+
+### Tier 6: Apex Infernal (The Brimstone Core)
+
+**Visual Identity:** The Pumpking, glowing violently bright orange with a constant eruption of `DustID.Lava`.
+**Unique Moveset:** The Enrage Timer.
+
+* **Mechanic:** The boss possesses a relatively small health pool but accelerates its movement, fire rate, and damage by 2% every second the fight goes on.
+* **The Chase:** Periodically floods the lowest platform row with lingering lava, shrinking the playable vertical space as the fight extends. It is a strict DPS check.
+**Uniques Identity:** *The Sacrificial Arts.*
+* **Warrior (Crucibles Wrath):** Ignites the player for massive Damage Reduction and Damage.
+* **Ranger (Brimstone Salvo):** Trades all Defense for flat Armor Penetration.
+* **Sorcerer (Pyromancers Brand):** Trades all Defense for Magic Crit.
+* **Summoner (Ashen Lash):** Max Ward grants massive Whip Damage.
+**Why Farm?** These are the ultimate speed-farming weapons. They strip away safety nets to provide the highest raw burst damage in the mod.
+
+### Tier 7: Apex Granite Core (The Kinetic Overseer)
+
+**Visual Identity:** Martian Saucer Core, surrounded by orbiting chunks of Granite (invincible projectiles that block shots).
+**Unique Moveset:** Momentum Checking.
+
+* **Mechanic:** Periodically activates a blue "Repulsion Field." If the player stops moving, the field violently throws them into the arena walls for massive damage.
+* **The Chase:** Fires tracking lasers that sweep across the arena, requiring the player to dash *through* the beam rather than outrunning it.
+**Uniques Identity:** *The Kinetic Engine.*
+* **Warrior (Kinetic Crusher):** Velocity grants Defense.
+* **Ranger (Railgun Core):** Velocity grants Ranged Damage.
+* **Sorcerer (Geode Channeler):** Max Mana scales Magic Damage.
+* **Summoner (Matrix Overlord):** If Ward is fully capped, Minions gain massive Attack Speed.
+**Why Farm?** Designed for highly mobile builds. Players who heavily spec into Movement Speed keystones need these weapons to weaponize that mobility.
+
+### Tier 8: Apex Fungal Lord (The Void Blight)
+
+**Visual Identity:** Plantera, tinted pitch black (`Color.Black`), pulsing with dark purple energy, moving erratically.
+**Unique Moveset:** Resource Leeching & Degeneration.
+
+* **Mechanic:** The Fungal Lord's attacks do not deal standard health damage. Instead, they deal triple damage directly to Energy Shield and Spirit Ward. If those are depleted, they drain Max Mana. Only when Mana is empty do they touch the player's HP.
+* **The Chase:** Spawns toxic spore clouds that slowly expand to cover 80% of the arena over time. The player must actively attack the spores to shrink them back down while managing the boss.
+**Uniques Identity:** *The Symbiotes.*
+* **Warrior (Mycelial Glaive):** Halves Max Life, grants insane Life Regeneration.
+* **Ranger (Toxic Proliferator):** Trades Evasion Chance for flat Ranged Damage percentage.
+* **Sorcerer (Void Blight):** Doubles Max Energy Shield and grants huge Damage, but constantly drains ES.
+* **Summoner (Fungal Symbiote):** Drains Ward constantly, but grants +1 Minion for every missing chunk of Ward.
+**Why Farm?** The pinnacle pursuit items. They completely alter how the player interacts with the mod's custom ARPG resource bars, forcing them to balance continuous degeneration against god-like power spikes.
+
+ROADMAP: UPCOMING PHASES
+I. Ascendancies (Sub-Class Specializations)
+
+Core Concept: A secondary mastery framework allowing players to refine their primary class into a hyper-specialized sub-class archetype. Unlocked in the Sky-Island Hub upon defeating the first Map Guardian, granting access to an independent 8-node Ascendancy wheel separate from the main passive tree.
+
+Design Objective: Provide build-defining specialization. While the primary tree offers broad stat scaling, Ascendancies deliver targeted, playstyle-altering keystone passives that lock in a distinct identity and power fantasy.
+
+II. Dynamic In-Dungeon Mechanics (Encounters)
+
+Core Concept: Procedurally injected, opt-in combat events that spawn randomly within dungeon chambers via MapGridGraph.cs. These anchors disrupt the static "walk-and-clear" room flow, initiating localized challenges that stress-test specific ARPG stat vectors (DPS, movement, sustain, or defense).
+
+Encounter Roster (Tier-Scaled):
+
+The Escalation Anchor (Endless Swarm): An interactable obelisk locks the camera and triggers endless enemy waves. A "Pressure Level" stacks every 10 seconds, granting compounding stat multipliers to monsters. The event continues until the player extracts manually or dies, forcing players to judge their build's absolute breaking point.
+
+Spatial Pacts (The Faustian Bargain): Shrines offering permanent, massive buffs for the remainder of the dungeon run, offset by build-crippling penalties targeting custom ARPG mechanics (e.g., +50% Damage, but Max Energy Shield and Spirit Ward are permanently locked to 0).
+
+The Shadowfall Event (Delve / Survival): Hijacks the MapLightingSystem to plunge the subworld into darkness. Players must follow a moving "Aetheric Wisp" through corridors. Stepping into the darkness deals scaling damage—progressing from HP drain in early tiers to instantly shattering Energy Shield/Ward in endgame tiers.
+
+Lockdown Anomalies (Bullet Heaven Trap): Seals chamber doors with ActiveStoneBlock and activates hostile geometric hazards (rotating lasers, lava grids, falling debris). Players must survive a 60-second environmental bullet-hell where safe zones dynamically shrink.
+
+The Temporal Anomaly (Time Dilation): Time accelerates to 400% speed, but only when the player moves or attacks. Stopping inputs pauses the room completely. Tests spatial awareness and micro-movements to weave through dense, high-tier projectile walls.
+
+Leyline Defense (Tower Defense): An allied crystal spawns, and enemy waves pour in completely ignoring player aggro. Players must utilize body-blocking, massive AoE, and high Defense/Ward to intercept damage and halt heavy "Breaker" elites.
+
+The Compacting Vault (DPS Crush Trap): Invulnerable walls slowly grind toward the room's center, powered by four "Lodestone Monsters" with massive Defense pools. Tests extreme single-target DPS and Armor Penetration to execute the monsters before the walls close in.
+
+Aetheric Zones (King of the Hill): Players must capture shifting zones within a chamber. Standing outside an active zone applies severe mechanical debuffs (e.g., halting Mana/ES regeneration or slashing Movement Speed by 90%), demanding high sustain and mobility.
+
+Kinetic Polarity (State Matching): Enemies spawn with "Static" (blue) or "Kinetic" (red) shields. Static enemies are immune to damage unless the player is standing perfectly still; Kinetic enemies are immune unless the player is moving at high velocity. Polarity shifts dynamically, testing movement control.
+
+The Rogue Exile (PvE Duels): Spawns an NPC invader utilizing the player's own ARPG framework. Exiles spawn with Warrior, Ranger, Sorcerer, or Summoner loadouts, utilizing player Keystones (e.g., an Exile dodging via Acrobatics or tanking via Juggernaut). Endgame tiers grant the Exile Ascendancy mechanics and healing flasks.
+
+**Phase 1: Apex Boss AI & Visual Overhaul**
+Execute the transition from the shared state machine to bespoke, tier-specific encounters.
+
+* **Base Class Refactor:** Update `ApexBossNPC.cs` to make the `AI()` method virtual. Retain the aggro tracking, despawn logic, `ApplyDifficultyAndPlayerScaling` algorithms, and `AtlasBossBar` UI bindings to ensure mathematical consistency.
+
+
+* **Tiers 1-4 (Mechanics & Visuals):** Implement the early-tier encounters. Override `AI()` and `PreDraw` for the Apex Sovereign (Cursed Roots/DarkRed tint), Apex Colossus (Gravity manipulation/Shockwaves), Apex Pharaoh (Mirage clones), and Apex Seraph (Geometric grid bullet hell).
+
+
+* **Tiers 5-8 (Advanced States):** Implement the endgame mechanics. Build the Frostbite stacking for the Cryo Titan, the Enrage Timer and lava flooding for the Infernal, the Repulsion Field momentum check for the Granite Core, and the direct Energy Shield/Ward leeching for the Fungal Lord.
+
+
+
+**Phase 2: Unique Weapon Integration & Polish**
+Wire the boss drops directly into the ARPG stat vectors using global item hooks.
+
+* **Aura & Penalty Hooks:** Utilize the `HoldItem` hook for weapons requiring aggressive, active penalties (e.g., locking `EnergyShieldRechargeDelay` for Absolute Zero or applying `BuffID.OnFire` for Crucible's Wrath) so the effects instantly clear upon un-equipping.
+
+
+* **Stat Conversions:** Implement dynamic stat flipping within `HoldItem`, such as reading `EvasionChance`, converting it to Ranged Crit, and setting Evasion back to zero for Heaven's Mandate.
+
+
+* **Capacity Overrides:** Explicitly set `player.maxMinions = 0` and boost `maxTurrets` during `HoldItem` for items like the Cryo Heart to dynamically kill active minions without save corruption.
+
+
+* **VFX:** Assign safe vanilla `Item.shoot` projectiles and map `MeleeEffects` to emit thematic `DustID` trails matching the boss's color palette.
+
+
+
+**Phase 3: Dynamic Encounter Framework**
+Build the procedural injection system for the new map mechanics.
+
+* **Grid Injection:** Update `MapGridGraph.cs` to assign an `EncounterType` to random `RoomNode` generation.
+
+
+* **Anchor Spawning:** Create the base interactable anchor tiles (obelisks, shrines, crystals) that will physically spawn in these designated rooms to initiate the opt-in combat events.
+
+
+
+**Phase 4: Encounter Implementation Rollout**
+Develop the 10 encounters in logical batches, stress-testing different ARPG vectors.
+
+* **Batch 1 (Stat & Scaling Tests):** Implement the Escalation Anchor (endless spawning with compounding Pressure Level multipliers) and Spatial Pacts (permanent shrines offering massive buffs for build-crippling penalties).
+
+
+* **Batch 2 (Spatial & Environmental):** Develop Lockdown Anomalies (sealing doors with geometric hazards and shrinking safe zones), Aetheric Zones (capturing shifting points to avoid severe debuffs), and the Shadowfall Event (hijacking `MapLightingSystem` to force players to track a moving Wisp).
+
+
+* **Batch 3 (DPS & Defense Checks):** Code the Compacting Vault (DPS race against Lodestone Monsters to stop crushing walls) and Leyline Defense (intercepting damage to protect an allied crystal from "Breaker" elites).
+
+
+* **Batch 4 (Complex Logic & PvP):** Finalize Kinetic Polarity (matching static/kinetic movement states to damage shields), Temporal Anomaly (tying room speed to player input), and the Rogue Exile (generating an NPC invader utilizing player Keystones and loadouts).
+
+Warrior (Melee & Mitigation)The Juggernaut: Pure flat health and damage reduction scaling. Forks into the Ironclad (Armor stacker/Retaliation) or the Blood Knight (Lifesteal/Regen).   The Berserker: Trades defense for massive damage spikes. Forks into the Executioner (Low-health damage multipliers) or the Zealot (Attack speed ramping).   The Gladiator: Focuses on critical strikes and agility. Forks into the Duelist (Single-target precision) or the Blade Dancer (Evasion/Melee hybrid).   The Centrifugal: Dedicated Yoyo and flail mastery. Forks into the Orbit (Multiple projectiles) or the Crater (Heavy hit/AoE).   The Kinetic: Converts movement and velocity directly into lethality and defense.The Aegis: Shield and block-centric combat. Converts defensive blocks into offensive shield-bashes.   The Warlord: Stacks weapon size, reach, and knockback.   The Earthshaker: Focuses on zero-knockback, heavy slamming attacks that generate secondary shockwaves.   Ranger (Projectiles & Positioning)The Sniper: High critical strike chance with severe fire-rate penalties. Forks into the Deadeye (Guaranteed crits) or the Assassin (First-hit damage multipliers).   The Gunner: Rapid-fire attack speed scaling. Forks into the Bullet Hose (Accuracy penalty for fire rate) or the Shredder (Armor penetration stacker).   The Demolitionist: Explosives, rockets, and AoE expansion.   The Bowman: Dedicated arrow and quiver utility. Forks into the Volley (Multishot spread) or the Piercer (Infinite punch-through).   The Phantom: Pure Evasion and dodge mechanics.   The Anchor: Stationary combat. Gains massive damage, armor penetration, and velocity multipliers as long as the player's X/Y velocity remains exactly zero.The Skirmisher: Run-and-gun combat. Damage scales with active movement speed, forcing the player to constantly dash to maintain DPS.The Trapper: Delayed damage and setting traps, allowing players to front-load massive damage zones before a boss spawns.Sorcerer (Mana & Elements)The Archmage: Mana-stacking. Forks into the Arcane Well (Mana replaces health via Mind Over Matter) or the Spellblade (Mana dictates flat damage).   The Glass Cannon: Halves max life for raw magic damage.   The Time Weaver: Pure cast speed and cooldown reduction.   The Librarian: Dedicated Spell Tome mastery. Forks into the Elementalist (DoT and Burn stacking) or the Geomancer (Earth/Physical magic).   The Bulwark: Energy Shield tanking. Focuses on uninterruptible ES recharge and massive shield caps.   The Void Walker: The Energy Shield detonator. Shatters the player's own ES to unleash a devastating AoE blast, leaving them vulnerable during the recharge phase.The Blood Mage: Removes mana entirely. All spells cost health, but scale exponentially based on how much health is missing.The Channeler: Immobilizes the player while casting, but continuously ramps up spell damage and size the longer the cast button is held.   Summoner (Minions & Ward)The Swarm: Maximizes minion slots while reducing individual minion damage.   The Lone Sovereign: Hard-locks the player to exactly 1 minion, converting all excess minion slots into compounding size and damage multipliers for that single entity.   The Whipmaster: Active melee-summoner hybrid. Whips grant buffs to minions and generate resources.   The Sentry Commander: Trades all active minion slots for stationary turrets.   The Spirit Conduit: Maximizes Spirit Ward capacity.   The Blood Priest: The player cannot generate Spirit Ward natively. 100% of minion damage is leeched back to the player as Spirit Ward, forcing aggressive minion positioning to survive.The Feral Beast: Focuses entirely on minion critical strikes and attack speed.   The Animist: Trades minion damage for powerful, screen-wide auras that heavily buff other players in multiplayer or debuff enemies globally.

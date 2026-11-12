@@ -1,0 +1,687 @@
+Items: {
+	WaystoneBase: {
+		DisplayName: Waystone
+		Tooltip: Consumes this token to open a spatial rift to the selected Atlas Node.
+	}
+
+	ChaosOrb: {
+		DisplayName: Chaos Orb
+		Tooltip:
+			'''
+			Reforges a Rare item with new random properties.
+			Right-Click this orb while holding a Rare (Yellow) equipment piece.
+			'''
+	}
+
+	OrbOfAlchemy: {
+		DisplayName: Orb of Alchemy
+		Tooltip:
+			'''
+			Upgrades a normal item to Rare, infusing it with up to 6 properties.
+			Right-Click this orb while holding a normal equipment piece.
+			'''
+	}
+
+	OrbOfAlteration: {
+		DisplayName: Orb of Alteration
+		Tooltip:
+			'''
+			Reforges a Magic item with a new random property.
+			Right-Click this orb while holding a Magic (Blue) equipment piece.
+			'''
+	}
+
+	RegalOrb: {
+		DisplayName: Regal Orb
+		Tooltip:
+			'''
+			Upgrades a Magic item to a Rare item, adding one new property.
+			Right-Click this orb while holding a Magic (Blue) equipment piece.
+			'''
+	}
+
+	ApexCatalystKey: {
+		DisplayName: Apex Catalyst
+		Tooltip: A fractured key capable of opening the Apex Domain. Can only be used in the Sky Hub.
+	}
+
+	ExaltedOrb: {
+		DisplayName: Exalted Orb
+		Tooltip:
+			'''
+			Adds one new random property to a Rare item.
+			Right-Click this orb while holding a Rare (Yellow) equipment piece with open property slots.
+			'''
+	}
+
+	DivineOrb: {
+		DisplayName: Divine Orb
+		Tooltip:
+			'''
+			Randomizes the numerical values of all properties on an item.
+			Right-Click this orb while holding a Magic or Rare equipment piece.
+			'''
+	}
+
+	OrbOfScouring: {
+		DisplayName: Orb of Scouring
+		Tooltip:
+			'''
+			Removes all properties from an item, returning it to Normal tier.
+			Right-Click this orb while holding an altered equipment piece.
+			'''
+	}
+
+	OrbOfAnnulment: {
+		DisplayName: Orb of Annulment
+		Tooltip:
+			'''
+			Fractures and removes one random property from an item.
+			Right-Click this orb while holding a Magic or Rare equipment piece.
+			'''
+	}
+
+	WindripperEcho: {
+		DisplayName: Windripper's Echo
+		Tooltip:
+			'''
+			+10% Evasion Chance. Fires a 3-arrow spread.
+			Bonus Movement Speed is added to Ranged Damage.
+			'The gale asks no permission. Velocity is lethality.'
+			'''
+	}
+
+	TheLeviathan: {
+		DisplayName: The Leviathan
+		Tooltip:
+			'''
+			+50 Max Life and +10% Damage Reduction while held.
+			Hits unleash a blood nova dealing your Max Life to nearby enemies.
+			'Let the earth drink your vitality, and return it as wrath.'
+			'''
+	}
+
+	SovereignChain: {
+		DisplayName: Sovereign's Chain
+		Tooltip:
+			'''
+			+1 Max Minion. Current Spirit Ward scales Summon Damage.
+			Whip strikes leech Spirit Ward up to 200% of maximum capacity.
+			'Submit to the collective will. My shield is their strength.'
+			'''
+	}
+
+	AstralBattery: {
+		DisplayName: Astral Battery
+		Tooltip:
+			'''
+			Grants +1 Max Energy Shield per 10 Max Mana.
+			Energy Shield recharge cannot be interrupted by damage.
+			'Limitless power, caged in mortal binding. The shield never falters.'
+			'''
+	}
+
+	RubbleMaker: {
+		DisplayName: Rubble Maker
+		Tooltip:
+			'''
+			Grants +25 Defense and +40% Ranged Damage while standing completely still.
+			'Demolition requires a sturdy foundation.'
+			'''
+	}
+
+	MonolithCore: {
+		DisplayName: Monolith Core
+		Tooltip:
+			'''
+			Grants +1% Summon Damage for every 5 Max Spirit Ward.
+			'Carved from the bones of the old world.'
+			'''
+	}
+
+	GeomancersOmen: {
+		DisplayName: Geomancer's Omen
+		Tooltip:
+			'''
+			While Energy Shield is active, gain +25% Damage Reduction but -40% Movement Speed.
+			'Root yourself in the arcane bedrock.'
+			'''
+	}
+
+	Faultline: {
+		DisplayName: Faultline
+		Tooltip:
+			'''
+			Critical strikes trigger seismic shockwaves dealing 400% of your Defense.
+			'The mountain does not yield. It shatters.'
+			'''
+	}
+
+	AbsoluteZero: {
+		DisplayName: Absolute Zero
+		Tooltip:
+			'''
+			+50% Magic Damage while Energy Shield is active, but Energy Shield cannot recharge.
+			'Power preserved perfectly in ice, at the cost of blood.'
+			'''
+	}
+
+	Avalanche: {
+		DisplayName: Avalanche
+		Tooltip:
+			'''
+			Grants +1% Melee Damage for every point of Defense.
+			'An unstoppable force born of immovable stone.'
+			'''
+	}
+
+	CryoHeart: {
+		DisplayName: Cryo Heart
+		Tooltip:
+			'''
+			Sets Max Minions to 0. Grants +3 Max Sentries and +60% Summon Damage.
+			'Shatter the swarm. Fortify the solitary guard.'
+			'''
+	}
+
+	DuneShredder: {
+		DisplayName: Dune Shredder
+		Tooltip:
+			'''
+			Grants +20% Flat Evasion Chance while actively firing.
+			'A sandstorm compressed into a firing chamber.'
+			'''
+	}
+
+	Hailstorm: {
+		DisplayName: Hailstorm
+		Tooltip:
+			'''
+			Bonus Movement Speed is added to Ranged Attack Speed.
+			'Kinetic energy chilled to the breaking point.'
+			'''
+	}
+
+	HeavensMandate: {
+		DisplayName: Heaven's Mandate
+		Tooltip:
+			'''
+			Converts all Evasion Chance into Ranged Critical Strike Chance. Disables dodging.
+			'Do not hide from judgment. Deliver it.'
+			'''
+	}
+
+	MirageWeaver: {
+		DisplayName: Mirage Weaver
+		Tooltip:
+			'''
+			Grants +1% Flat Evasion Chance for every 10 Max Mana.
+			'They cannot kill what isn't truly there.'
+			'''
+	}
+
+	PharaohsCurse: {
+		DisplayName: Pharaoh's Curse
+		Tooltip:
+			'''
+			Grants +2 Max Minions, but reduces Movement Speed by 30%.
+			'The sands remember every empire they've swallowed.'
+			'''
+	}
+
+	PrismaticEdge: {
+		DisplayName: Prismatic Edge
+		Tooltip:
+			'''
+			Converts bonus Melee Attack Speed into Life Regeneration.
+			'Refracts the wielder's vitality into blinding light.'
+			'''
+	}
+
+	SeraphimChime: {
+		DisplayName: Seraphim Chime
+		Tooltip:
+			'''
+			Grants +1 Max Minion for every 50 Max Spirit Ward.
+			'Every toll brings them closer to the light.'
+			'''
+	}
+
+	SeraphsGaze: {
+		DisplayName: Seraph's Gaze
+		Tooltip:
+			'''
+			Grants up to +40% Magic Critical Strike Chance based on missing Energy Shield.
+			'Judgment requires no incantation. Only sight.'
+			'''
+	}
+
+	SunscorchedKhopesh: {
+		DisplayName: Sunscorched Khopesh
+		Tooltip:
+			'''
+			Halves your Defense, granting +1% Melee Damage per point of Defense lost.
+			'Leave your armor in the dunes. Strike with the heat of the sun.'
+			'''
+	}
+
+	AshenLash: {
+		DisplayName: Ashen Lash
+		Tooltip:
+			'''
+			Max Spirit Ward scales Summon Damage (+0.5% per point of Ward).
+			'Even embers leave scars.'
+			'''
+	}
+
+	BrimstoneSalvo: {
+		DisplayName: Brimstone Salvo
+		Tooltip:
+			'''
+			Trades all Defense for an equal amount of flat Armor Penetration.
+			'Hellfire seeks out the living.'
+			'''
+	}
+
+	CruciblesWrath: {
+		DisplayName: Crucible's Wrath
+		Tooltip:
+			'''
+			Ignites the wielder to grant +20% Damage Reduction and +40% Melee Damage.
+			'To hold it is to burn. To swing it is to incinerate.'
+			'''
+	}
+
+	FungalSymbiote: {
+		DisplayName: Fungal Symbiote
+		Tooltip:
+			'''
+			Rapidly drains Spirit Ward, granting +1.5% Summon Damage per missing Spirit Ward.
+			'It breeds in the fractures of your soul.'
+			'''
+	}
+
+	GeodeChanneler: {
+		DisplayName: Geode Channeler
+		Tooltip:
+			'''
+			Grants +1% Magic Damage for every 10 Max Mana.
+			'Channel the resonance of the planet's core.'
+			'''
+	}
+
+	KineticCrusher: {
+		DisplayName: Kinetic Crusher
+		Tooltip:
+			'''
+			Converts horizontal momentum directly into bonus Defense.
+			'Velocity is the ultimate armor.'
+			'''
+	}
+
+	MatrixOverlord: {
+		DisplayName: Matrix Overlord
+		Tooltip:
+			'''
+			+15% Summon Attack Speed (+40% while Spirit Ward is at maximum capacity).
+			'The network demands obedience.'
+			'''
+	}
+
+	MycelialGlaive: {
+		DisplayName: Mycelial Glaive
+		Tooltip:
+			'''
+			Halves your Max Life, but grants +40 Life Regeneration.
+			'It feeds on you, but keeps you alive to spread its spores.'
+			'''
+	}
+
+	PyromancersBrand: {
+		DisplayName: Pyromancer's Brand
+		Tooltip:
+			'''
+			Converts all Defense directly into Magic Critical Strike Chance.
+			'A scorched brand that offers no protection, only devastation.'
+			'''
+	}
+
+	RailgunCore: {
+		DisplayName: Railgun Core
+		Tooltip:
+			'''
+			Horizontal velocity scales Ranged Damage.
+			'Calibrated for high-speed evasion.'
+			'''
+	}
+
+	ToxicProliferator: {
+		DisplayName: Toxic Proliferator
+		Tooltip:
+			'''
+			Converts all Evasion Chance directly into Ranged Damage. Disables dodging.
+			'There is nowhere left to run.'
+			'''
+	}
+
+	VoidBlight: {
+		DisplayName: Void Blight
+		Tooltip:
+			'''
+			Doubles Max Energy Shield and grants +50% Magic Damage, but continuously drains Energy Shield.
+			'An anomaly that consumes everything, including its master's barriers.'
+			'''
+	}
+
+	EndlessRocketPouch: {
+		DisplayName: Endless Rocket Pouch
+		Tooltip: An endless supply of standard rockets.
+	}
+
+	ShrapnelTrapItem: {
+		DisplayName: Shrapnel Trap
+		Tooltip: Tosses an explosive proximity trap.
+	}
+
+	ShrapnelTrap: {
+		DisplayName: Shrapnel Trap
+		Tooltip: Tosses an explosive proximity trap.
+	}
+
+	SeismicCry: {
+		DisplayName: Seismic Cry
+		Tooltip:
+			'''
+			Unleashes a devastating seismic shout that damages and knocks back nearby foes.
+			Grants 'Seismic Might' for 10 seconds, scaling Defense, Endurance, and Melee Damage per enemy hit.
+			8 second cooldown.
+			'''
+	}
+
+	MartyrsIdol: {
+		DisplayName: Martyrs Idol
+		Tooltip: ""
+	}
+
+	AncientDoom: {
+		DisplayName: Ancient Doom
+		Tooltip: ""
+	}
+
+	WolfAspect: {
+		DisplayName: Wolf Aspect
+		Tooltip: ""
+	}
+
+	DrakomireAspect: {
+		DisplayName: Drakomire Aspect
+		Tooltip: ""
+	}
+
+	WolfsHowl: {
+		DisplayName: Wolfs Howl
+		Tooltip: ""
+	}
+
+	FrigidGlimmer: {
+		DisplayName: Frigid Glimmer
+		Tooltip: ""
+	}
+
+	AscendancyRelic: {
+		DisplayName: Ascendancy Relic
+		Tooltip: ""
+	}
+
+	GlacialEdgeJewel: {
+		DisplayName: Glacial Edge Jewel
+		Tooltip: ""
+	}
+
+	PermafrostCarapaceJewel: {
+		DisplayName: Permafrost Carapace Jewel
+		Tooltip: ""
+	}
+
+	PlaceholderDefenseJewel: {
+		DisplayName: Placeholder Defense Jewel
+		Tooltip: ""
+	}
+
+	PlaceholderOffenseJewel: {
+		DisplayName: Placeholder Offense Jewel
+		Tooltip: ""
+	}
+
+	PlaceholderUltimateJewel: {
+		DisplayName: Placeholder Ultimate Jewel
+		Tooltip: ""
+	}
+
+	PlaceholderUtilityJewel: {
+		DisplayName: Placeholder Utility Jewel
+		Tooltip: ""
+	}
+
+	RimeStepJewel: {
+		DisplayName: Rime Step Jewel
+		Tooltip: ""
+	}
+
+	EhecatlGaleJewel: {
+		DisplayName: Ehecatl Gale Jewel
+		Tooltip: ""
+	}
+
+	EhecatlTempestBladeJewel: {
+		DisplayName: Ehecatl Tempest Blade Jewel
+		Tooltip: ""
+	}
+
+	OllinChronoBurstJewel: {
+		DisplayName: Ollin Chrono Burst Jewel
+		Tooltip: ""
+	}
+
+	OllinChronoJewel: {
+		DisplayName: Ollin Chrono Jewel
+		Tooltip: ""
+	}
+
+	TezcatlipocaChainBoltJewel: {
+		DisplayName: Tezcatlipoca Chain Bolt Jewel
+		Tooltip: ""
+	}
+
+	TezcatlipocaStormJewel: {
+		DisplayName: Tezcatlipoca Storm Jewel
+		Tooltip: ""
+	}
+
+	TlalocConduitJewel: {
+		DisplayName: Tlaloc Conduit Jewel
+		Tooltip: ""
+	}
+
+	TlalocStormCallJewel: {
+		DisplayName: Tlaloc Storm Call Jewel
+		Tooltip: ""
+	}
+
+	XiuhcoatlCinderBrandJewel: {
+		DisplayName: Xiuhcoatl Cinder Brand Jewel
+		Tooltip: ""
+	}
+
+	XiuhcoatlPyreJewel: {
+		DisplayName: Xiuhcoatl Pyre Jewel
+		Tooltip: ""
+	}
+
+	XiuhtecuhtliMagmaArrowJewel: {
+		DisplayName: Xiuhtecuhtli Magma Arrow Jewel
+		Tooltip: ""
+	}
+
+	XiuhtecuhtliTrapJewel: {
+		DisplayName: Xiuhtecuhtli Trap Jewel
+		Tooltip: ""
+	}
+
+	XochiquetzalBloomJewel: {
+		DisplayName: Xochiquetzal Bloom Jewel
+		Tooltip: ""
+	}
+
+	XochiquetzalThornLashJewel: {
+		DisplayName: Xochiquetzal Thorn Lash Jewel
+		Tooltip: ""
+	}
+
+	AethericRiftConduit: {
+		DisplayName: Aetheric Rift Conduit
+		Tooltip: ""
+	}
+
+	CataclysmBellowCry: {
+		DisplayName: Cataclysm Bellow Cry
+		Tooltip: ""
+	}
+
+	ChronoSingularityTrap: {
+		DisplayName: Chrono Singularity Trap
+		Tooltip: ""
+	}
+
+	JadeEffigyIdol: {
+		DisplayName: Jade Effigy Idol
+		Tooltip: ""
+	}
+
+	ObsidianRoarCry: {
+		DisplayName: Obsidian Roar Cry
+		Tooltip: ""
+	}
+
+	OllinSingularityConduit: {
+		DisplayName: Ollin Singularity Conduit
+		Tooltip: ""
+	}
+
+	SolarClusterTrap: {
+		DisplayName: Solar Cluster Trap
+		Tooltip: ""
+	}
+
+	TzitzimitlEclipseIdol: {
+		DisplayName: Tzitzimitl Eclipse Idol
+		Tooltip: ""
+	}
+}
+
+Buffs: {
+	MapIlluminationBuff: {
+		DisplayName: Map Illumination
+		Description: Grants intense ambient light spanning the entire dungeon sector.
+	}
+
+	FungalEaterBuff: {
+		DisplayName: Fungal Eater
+		Description: The Fungal Eater will fight for you.
+	}
+
+	SeismicMightBuff: {
+		DisplayName: Seismic Might
+		Description: Empowering your strikes from the fury of nearby foes.
+	}
+
+	WarcryCooldownDebuff: {
+		DisplayName: Warcry Cooldown
+		Description: You must catch your breath before shouting again.
+	}
+
+	FrigidGlimmerBuff: {
+		DisplayName: Frigid Glimmer Buff
+		Description: Mods.WarpedAtlas.Buffs.FrigidGlimmerBuff.Description
+	}
+
+	FrigidGlimmerCooldownDebuff: {
+		DisplayName: Frigid Glimmer Cooldown Debuff
+		Description: Mods.WarpedAtlas.Buffs.FrigidGlimmerCooldownDebuff.Description
+	}
+
+	EhecatlVortexBuff: {
+		Description: Mods.WarpedAtlas.Buffs.EhecatlVortexBuff.Description
+		DisplayName: Ehecatl Vortex Buff
+	}
+
+	OllinChronoSurgeBuff: {
+		DisplayName: Ollin Chrono Surge Buff
+		Description: Mods.WarpedAtlas.Buffs.OllinChronoSurgeBuff.Description
+	}
+
+	XiuhcoatlPyreDebuff: {
+		DisplayName: Xiuhcoatl Pyre Debuff
+		Description: Mods.WarpedAtlas.Buffs.XiuhcoatlPyreDebuff.Description
+	}
+
+	XochiquetzalBloomBuff: {
+		DisplayName: Xochiquetzal Bloom Buff
+		Description: Mods.WarpedAtlas.Buffs.XochiquetzalBloomBuff.Description
+	}
+}
+
+Tiles: {
+	MapAltarTile.MapEntry: Map Altar
+	ExtractionPortalTile.MapEntry: Extraction Portal
+	ApexAltarTile.MapEntry: Apex Altar
+}
+
+Keybinds: {
+	"Open Atlas Map.DisplayName": Open Atlas Map
+	"Open Atlas Passives.DisplayName": Open Atlas Passives
+	"Open Character Sheet.DisplayName": Open Character Sheet
+	"Open Ascendancy Matrix.DisplayName": Open  Ascendancy  Matrix
+	"Activate Ascendancy Ultimate.DisplayName": Activate  Ascendancy  Ultimate
+}
+
+NPCs: {
+	MapGuardianNPC.DisplayName: Map Guardian
+	DungeonGuardianNPC.DisplayName: Dungeon Guardian
+	HallowedGuardianNPC.DisplayName: Hallowed Guardian
+	LihzahrdGuardianNPC.DisplayName: Lihzahrd Guardian
+	SandstoneGuardianNPC.DisplayName: Sandstone Guardian
+	HellforgeGuardianNPC.DisplayName: Hellforge Guardian
+	GraniteGuardianNPC.DisplayName: Granite Guardian
+	FungalGuardianNPC.DisplayName: Fungal Guardian
+	CryoFrostGuardianNPC.DisplayName: Cryo-Frost Guardian
+	ApexSovereignNPC.DisplayName: Apex Sovereign
+	ApexSeraphNPC.DisplayName: Apex Seraph
+	ApexPharaohNPC.DisplayName: Apex Pharaoh
+	ApexInfernalNPC.DisplayName: Apex Infernal
+	ApexGraniteCoreNPC.DisplayName: Apex Granite Core
+	ApexFungalLordNPC.DisplayName: Apex Fungal Lord
+	ApexColossusNPC.DisplayName: Apex Colossus
+	ApexCryoTitanNPC.DisplayName: Apex Cryo Titan
+	EscalationAnchorNPC.DisplayName: Escalation Anchor N P C
+}
+
+Projectiles: {
+	FungalEaterMinion.DisplayName: Fungal Eater
+	ShrapnelTrapProjectile.DisplayName: Shrapnel Trap
+	SeismicShockwaveProjectile.DisplayName: Seismic Shockwave
+	MartyrPayload.DisplayName: Martyr Payload
+	AncientDoomProjectile.DisplayName: Ancient Doom Projectile
+	HomingIceSickle.DisplayName: Homing Ice Sickle
+	WolfsHowlMist.DisplayName: Wolfs Howl Mist
+	LivingLightningOrbProj.DisplayName: Living Lightning Orb Proj
+	TlalocArcVisualProj.DisplayName: Tlaloc Arc Visual Proj
+	XochiquetzalFruitProj.DisplayName: Xochiquetzal Fruit Proj
+	BloodRootHazard.DisplayName: Blood Root Hazard
+	ExpandingVoidCloudProj.DisplayName: Expanding Void Cloud Proj
+	GlacialShatterBoulderProj.DisplayName: Glacial Shatter Boulder Proj
+	RisingMagmaGeyserProj.DisplayName: Rising Magma Geyser Proj
+	TectonicShockwaveProj.DisplayName: Tectonic Shockwave Proj
+	EhecatlTempestCycloneProj.DisplayName: Ehecatl Tempest Cyclone Proj
+	XochiquetzalBriarSpikeProj.DisplayName: Xochiquetzal Briar Spike Proj
+}

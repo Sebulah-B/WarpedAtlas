@@ -1,0 +1,190 @@
+# THE WARPED ATLAS: MESOAMERICAN ARPG ROADMAP & MANIFESTO
+
+*Living Document — Tracks upcoming phases, planned mechanics, and experimental ideas, updated to reflect our mechanics-first Mesoamerican ARPG vision.*
+
+---
+
+## Core Philosophy: Mechanics Before Aesthetics
+
+Form follows function. The transition to a Mesoamerican ARPG identity will be driven entirely by mechanical systems, spatial logic, and scaling mathematics before a single custom sprite is drawn.
+
+Before committing to a custom `.png` asset pipeline, new encounter logic, class passive trees, and UI matrices should be rapidly wireframed visually on an iPad or Mac Studio using Keynote or PowerPoint sandboxes. Once a mechanical layout is proven and feels fluid to play, its architectural blueprint must be strictly isolated and logged into your technical Obsidian vault for formal C# implementation.
+
+---
+
+## What We Have Achieved (The Foundation)
+
+Our robust architectural foundation remains entirely functional, requiring only string and thematic updates to fit the new mythos:
+
+* **Procedural Dungeon Engine:** The dynamic subworld generation system utilizing `MapGridGraph.cs` successfully carves procedural, grid-based dungeon layouts. The 8 distinct biome profiles (scaling from Tier 1 to Tier 8) will be re-themed to represent the fractured realities of fallen Sun eras. The deterministic traversability pass—which cascades vertical ropes to eliminate drop-off traps—remains intact.
+
+
+* **Mesoamerican Economy & Loot Matrix:** The vanilla drop tables are intercepted and replaced via `AtlasLootFilter.cs`, which vaporizes non-essential items like gel and banners. The cursor-grab crafting economy will be rebranded:
+
+
+* *Obsidian Flake (formerly Alteration)*
+
+
+* *Copal Resin (formerly Alchemy)*
+
+
+* *Ollin Core (formerly Chaos)*
+
+
+* *Quetzal Feather (formerly Exalted)*
+
+
+* *Jade Heart (formerly Divine)*
+
+
+* *Sacrificial Flint (formerly Annulment)*
+
+
+* *Ash of the First Sun (formerly Scouring)*
+
+
+* *Crown of the Tlatoani (formerly Regal)*
+
+
+
+
+* **Passive & Resource Systems:** The completely decoupled, class-isolated Cartesian passive tree utilizing a Geometrical Cluster Engine boasts exactly 800 nodes. This drives custom ARPG defensive vectors tracked within `AtlasProgressionPlayer.cs` (Flat Evasion, Armor Penetration, Spirit Ward, and Energy Shield).
+
+
+* **Encounter Framework:** The `BossDomainSubworld.cs` successfully isolates pinnacle encounters in a dedicated 800x800 arena, previously accessed via Apex Catalyst Keys (now *Fractured Sunstones*). Bosses feature tier-scaled health and damage math driven by `AtlasNPCScaleSystem.cs`.
+
+
+
+---
+
+## Phase 1: The Five Suns Campaign Engine
+
+To provide a structured on-ramp, we are utilizing our existing systems to construct a linear, narrative-driven campaign centered on a fallen warrior hunting a rogue creation god (a Tezcatlipoca archetype) seeking to end the Sun cycle.
+
+* **Narrative Pathing:** We will heavily repurpose the `MapGridGraph.cs` architecture to generate structured wilderness and dungeon transitions. Instead of randomized endpoints, the final node will force-generate as a deterministic Story Room to anchor the narrative progression.
+
+
+* **Scripted Despots & Transformations:** We will implement bespoke, bypass-chat NPCs equipped with custom state machines. These actors will deliver dialogue through a custom UI panel (like the Escalation Anchor does). These NPCs will execute violent cinematic sequences culminating in transformations where their friendly sprite vaporizes, spawning a Tier Boss in their exact coordinates.
+
+
+* **Targeted Progression Drops:** Build-defining Unique weapons will initially be restricted exclusively to these Campaign Boss encounters. Once the campaign is completed, loot tables will widen, injecting these Uniques into the randomized endgame pool.
+
+
+
+---
+
+## Phase 2: Ascendancy Framework
+
+We are adopting a highly modular, itemized Ascendancy system.
+
+* **The 4-Slot Matrix:** Subclasses will be itemized and slotted into four dedicated UI sockets labeled: Offense, Defense, Utility, and Ultimate.
+
+
+* **Modular Subclasses:** We will design 12 base Ascendancies across the four classes. Players will navigate through 2 of 8 initial passive paths.
+
+
+* **Drafted Mechanics — Eagle/Jaguar Warrior (Ranger/Melee Hybrid):** A dedicated Utility slot option will intercept global projectile logic. Whenever the player throws a trap weapon (like `ShrapnelTrap`), the engine will generate and fire 2 additional, slightly angled trap projectiles.
+
+
+* **Drafted Mechanics — The Nahual (Shapeshifter):** We will drastically expand the `BuffID.Werewolf` toolkit to physically transform the player model, introducing scaling, mana-costing attacks. This includes a territorial howl spell calculating cursor position to spawn falling `CultistBossIceMist` projectiles 600 pixels in the sky that phase through terrain and shatter explosively.
+
+
+* **Visual Integration:** During early development, we will utilize vanilla Gemstone Blocks (Ruby, Sapphire, Diamond) as temporary, color-coded UI icons for Ascendancy jewels before custom Mesoamerican assets are finalized.
+
+
+
+---
+
+## Phase 3: Themed Dynamic Encounters & Endgame Transition
+
+We are focusing purely on a small roster of highly polished, biome-integrated mechanics.
+
+* **Biome-Specific Environmental Generation:** Dynamic encounters injected via `MapGridGraph.cs` will be heavily themed to their map profiles. For example, the Tier 5 Obsidian-Frost Peaks will feature Lockdown Anomalies with aggressively shrinking safe-zones. Conversely, void zones mapped to the Tier 8 Tzitzimitl Abyss will violently drain defensive pools, forcing constant, aggressive movement to survive.
+
+
+* **The Sunstone Astrolabe (Map Device):** We will engineer a physical or UI-driven mechanic strictly within Ilhuicatl-Tonatiuh (the Sky-Island Hubworld). This device serves as the explicit boundary separating the deterministic Campaign acts from the infinite, procedural endgame, dictating exactly when randomized map loot tables take over.
+
+
+
+---
+
+## Phase 4: Native ARPG UI Systems
+
+* **The Native Stash Tab:** We will build a character-bound virtual item array serialized directly into `AtlasProgressionPlayer.cs` via `TagCompound`. Access to this Stash UI will be strictly restricted to the safety of the Sky-Island Hub. The UI will feature a dedicated sorting mechanic to instantly warehouse the 8 custom crafting cores and resins.
+
+
+* **The Ascendancy Board:** We will expand the `AtlasCharacterSheetUI` to house the 4-slot Ascendancy matrix. This panel will feature backdrops dynamically matching the subclass theme, initially using atmospheric solid color gradients before being replaced with custom illustration assets.
+
+
+
+---
+
+## Phase 5: Custom Asset & Sprite Pipeline
+
+* **De-Placeholder the Arsenal:** We will replace hijacked vanilla sprites across our active toolkits. Weapons utilizing placeholder amulets will be given bespoke, 1:1 scale `.png` sprite files of macuahuitls, tepoztopillis, and jade idols exported with transparent backgrounds.
+
+
+* **VFX & Particles:** We will design custom texture sheets for unique dusts (obsidian flakes, solar fire, blood magic), weapon auras, and projectile trails.
+
+
+* **Custom Interface Assets:** We will finalize bespoke textures for the Stash Tab grid, the 4-slot Ascendancy panel, and visually distinct custom resource globes to track Health, Mana, Energy Shield, and Spirit Ward states.
+
+
+
+---
+
+## Phase 6: Active Toolkit Expansion & Boss Overhauls
+
+To align with the Mesoamerican lore, the 8 Apex Bosses are entirely re-conceptualized. Mechanics are preserved or enhanced, but the thematic execution shifts.
+
+### Encounter & Boss Polish
+
+* **T1 — Warden of Mictlan (formerly Apex Sovereign):** Upgrade the Cursed Flame spawns into persistent, stationary "Blood-Root" platform hazards that aggressively flare every 3 seconds.
+
+
+* **T2 — Earth-Shaker Tepeyollotl (formerly Apex Colossus):** Formalize the gravity-altering jump-reduction mechanic into a highly visible "Crushed" debuff icon.
+
+
+* **T3 — Toltec Sun-Priest (formerly Apex Pharaoh):** Upgrade the triple-shot behavior into physical, invincible "Sun-Mirage" dummy NPCs that orbit the player and retaliate with unavoidable solar-blasts if struck while the real boss isn't glowing.
+
+
+* **T4 — Feathered Arbiter Quetzal (formerly Apex Seraph):** Lock the boss perfectly to the arena center during grid phases to fire delayed, crisscrossing geometric lattices of `PhantasmalBolt` projectiles.
+
+
+* **T5 — Itztli Frost Titan (formerly Apex Cryo Titan):** Add a rotating hexagonal obsidian-ice shield executed via `PreDraw`, introduce wall-shattering ice boulders that fragment into 8 radial shards, and apply a 5-stack "Frostbite" player freeze debuff.
+
+
+* **T6 — Volcanic Core Xiuhtecuhtli (formerly Apex Infernal):** Flood the bottom 5 tiles of the arena layout with rising lava projectiles over time, forcing a strict DPS race by shrinking vertical maneuverability.
+
+
+* **T7 — Apex Ollin (formerly Apex Granite Core):** Spawn physical, orbiting tectonic chunks that block player projectiles, and introduce sweeping arena lasers that require precise dash-through timing to survive.
+
+
+* **T8 — Eclipse Lord Tzitzimitl (formerly Apex Fungal Lord):** Introduce severe Mana drain after Energy Shield and Ward pools are depleted, and program Void Clouds to slowly expand to cover 80% of the arena unless actively attacked and shrunk by the player.
+
+
+
+### Toolkit Expansions
+
+* **Smart Armor Slot Filtering:** We will add a static `VaultArmorSlotDropped` tracker directly to `BaseDungeonSubworld.cs`. When the primary Vault chest (the *Techcatl* reward) natively rolls a Helmet, Breastplate, or Legging, the engine will log the slot type so secondary dynamic encounter chests guarantee a non-duplicate set piece.
+
+
+* **Multi-Tier Scaling:** We will expand Warcries, Traps, Fetishes, and the Sorcerer toolkits across Tiers 1 through 8.
+
+
+* **Sorcerer Active Concepts:** Implement Spatial Rifts allowing two-click geometry casting, Arcanum Brands that execute stack proliferation, and Astral Orbitals that must be physically intercepted by the player model to reset cooldowns.
+
+
+* **Fetish Expansions:** Draft Tier 2 Stone Idols leaving earthen hazard zones, Tier 4 Mirage Dolls shattering into homing spirits, and Tier 8 Eclipse Effigies that infect a minion to pulse AoE damage while its health decays rather than detonating it instantly.
+
+
+
+### Bug Backlog
+
+* **Custom Minion Buff Icon:** The `FungalEaterBuff` (soon to be `TzitzimitlEaterBuff`) currently hijacks the vanilla `StardustMinion` texture and tints it LimeGreen; this requires a dedicated sprite asset.
+
+
+* **Passive Node Placeholders:** We must wire up the remaining unmapped keystone effects located in `WarriorPassiveTree.cs`, specifically hooking up the `Duelist` critical multiplier conversion and the `Assassin` full-health double damage logic.
+
+
+* **Elementalist Burn Hook:** We must ensure the `KS_Elementalist` flag inside `AtlasProgressionPlayer.cs` actively applies `BuffID.OnFire` or `BuffID.OnFire3` on all successful magic projectile impacts.

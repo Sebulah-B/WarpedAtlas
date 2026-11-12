@@ -1,0 +1,8 @@
+displayName = The Warped Atlas
+author = Nebulah
+hideCode = false
+hideResources = false
+includeSource = true
+version = 0.1.0
+modDependencies = SubworldLibrary
+modReferences = SubworldLibrary

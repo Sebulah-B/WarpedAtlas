@@ -1,0 +1,18 @@
+{
+  "version": 2,
+  "dgSpecHash": "KHbvIc/rERhEIKRp5DCnQEjAEAlxawjjK3xqwb/o7ebEMTTf9FRiluDPCDgAb7IfTlwYNrofN2MWRIb7d3OG/A==",
+  "success": false,
+  "projectFilePath": "C:\\tModLoaderFiles\\ModSources\\WarpedAtlas\\WarpedAtlas.csproj",
+  "expectedPackageFiles": [],
+  "logs": [
+    {
+      "code": "NU1101",
+      "level": "Error",
+      "message": "Unable to find package SubworldLibrary. No packages exist with this id in source(s): Microsoft Visual Studio Offline Packages, nuget.org",
+      "libraryId": "SubworldLibrary",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    }
+  ]
+}
